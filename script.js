@@ -121,6 +121,7 @@ let filtroActivo = 'todos';
 function inicializarApp() {
     mostrarAutos(autos);
     configurarEventListeners();
+    inicializarChatbot();
 }
 
 // Configurar event listeners
@@ -287,6 +288,147 @@ function scrollToSection(sectionId) {
     document.getElementById(sectionId).scrollIntoView({
         behavior: 'smooth'
     });
+}
+
+// Chatbot functionality
+let chatbotOpen = false;
+const respuestas = {
+    "hola": "¡Hola! Bienvenido a AutoMax. ¿En qué puedo ayudarte?",
+    "autos": "Tenemos una gran variedad de autos: sedanes, SUVs, deportivos y hatchbacks. ¿Qué tipo te interesa?",
+    "precios": "Nuestros precios van desde $24,000 hasta $48,000. ¿Tienes algún presupuesto en mente?",
+    "financiamiento": "Ofrecemos excelentes opciones de financiamiento con tasas competitivas. Puedes financiar hasta el 90% del valor del auto.",
+    "horario": "Nuestro horario de atención es de Lunes a Sábado de 9:00 AM a 6:00 PM. Los domingos estamos cerrados.",
+    "contacto": "Puedes contactarnos al +1 (555) 123-4567 o por email a info@automax.com",
+    "ubicacion": "Nos encontramos en Av. Principal 123, Ciudad. ¡Te esperamos!",
+    "garantia": "Todos nuestros autos incluyen garantía completa de 2 años o 50,000 km.",
+    "toyota": "¡Excelente elección! Tenemos el Toyota Corolla 2023 por $25,000. Es muy confiable y eficiente.",
+    "honda": "Honda es una gran marca. Tenemos el CR-V 2023 por $32,000, perfecto para familias.",
+    "ford": "El Ford Mustang 2023 por $45,000 es nuestro deportivo estrella. ¡Pura potencia!",
+    "bmw": "BMW Serie 3 2023 por $48,000. Lujo alemán con la mejor tecnología.",
+    "default": "Gracias por tu mensaje. Un agente se pondrá en contacto contigo pronto. ¿Hay algo más en lo que pueda ayudarte?"
+};
+
+function inicializarChatbot() {
+    const toggle = document.getElementById('chatbot-toggle');
+    const window = document.getElementById('chatbot-window');
+    const input = document.getElementById('chatbot-input');
+    const sendBtn = document.getElementById('send-message');
+    const quickReplies = document.querySelectorAll('.quick-reply');
+
+    // Toggle chatbot
+    toggle.addEventListener('click', () => {
+        chatbotOpen = !chatbotOpen;
+        toggle.classList.toggle('active');
+        window.classList.toggle('active');
+        
+        if (chatbotOpen) {
+            input.focus();
+        }
+    });
+
+    // Enviar mensaje con botón
+    sendBtn.addEventListener('click', enviarMensaje);
+    
+    // Enviar mensaje con Enter
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            enviarMensaje();
+        }
+    });
+
+    // Quick replies
+    quickReplies.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const message = btn.dataset.message;
+            enviarMensajeUsuario(message);
+            setTimeout(() => {
+                responderBot(message);
+            }, 500);
+        });
+    });
+}
+
+function enviarMensaje() {
+    const input = document.getElementById('chatbot-input');
+    const message = input.value.trim();
+    
+    if (message) {
+        enviarMensajeUsuario(message);
+        input.value = '';
+        
+        // Simular delay de respuesta del bot
+        setTimeout(() => {
+            responderBot(message);
+        }, 1000);
+    }
+}
+
+function enviarMensajeUsuario(message) {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    const messageHtml = `
+        <div class="message user-message">
+            <div class="message-avatar">👤</div>
+            <div class="message-content">
+                <p>${message}</p>
+                <div class="message-time">${time}</div>
+            </div>
+        </div>
+    `;
+    
+    messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function responderBot(userMessage) {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    // Buscar respuesta
+    const mensaje = userMessage.toLowerCase();
+    let respuesta = respuestas.default;
+    
+    for (let key in respuestas) {
+        if (mensaje.includes(key)) {
+            respuesta = respuestas[key];
+            break;
+        }
+    }
+    
+    // Mostrar indicador de escritura
+    const typingHtml = `
+        <div class="message bot-message typing-indicator">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                <p>Escribiendo...</p>
+            </div>
+        </div>
+    `;
+    
+    messagesContainer.insertAdjacentHTML('beforeend', typingHtml);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    // Remover indicador y mostrar respuesta
+    setTimeout(() => {
+        const typingMsg = messagesContainer.querySelector('.typing-indicator');
+        if (typingMsg) {
+            typingMsg.remove();
+        }
+        
+        const responseHtml = `
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>${respuesta}</p>
+                    <div class="message-time">${time}</div>
+                </div>
+            </div>
+        `;
+        
+        messagesContainer.insertAdjacentHTML('beforeend', responseHtml);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }, 1500);
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
