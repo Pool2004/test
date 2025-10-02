@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMax - Concesionario Premium</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">🚗 AutoMax</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#autos">Autos</a></li>
+                    <li><a href="#sobre-nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h2>Los Mejores Autos del Mercado</h2>
+            <p>Encuentra el auto perfecto para ti con la mejor calidad y precio</p>
+            <button class="btn-primary" onclick="scrollToSection('autos')">Ver Catálogo</button>
+        </div>
+    </section>
+
+    <section id="autos" class="cars-section">
+        <div class="container">
+            <h2 class="section-title">Nuestros Autos</h2>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="sedan">Sedán</button>
+                <button class="filter-btn" data-filter="suv">SUV</button>
+                <button class="filter-btn" data-filter="deportivo">Deportivo</button>
+                <button class="filter-btn" data-filter="hatchback">Hatchback</button>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar por marca o modelo...">
+                <button id="search-btn">🔍</button>
+            </div>
+
+            <div id="cars-grid" class="cars-grid">
+                <!-- Los autos se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-nosotros" class="about-section">
+        <div class="container">
+            <h2 class="section-title">Sobre Nosotros</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>AutoMax es líder en venta de automóviles premium con más de 15 años de experiencia en el mercado.</p>
+                    <p>Ofrecemos los mejores precios, garantía completa y financiamiento flexible para que encuentres el auto de tus sueños.</p>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>500+</h3>
+                        <p>Autos Vendidos</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>98%</h3>
+                        <p>Satisfacción</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>15+</h3>
+                        <p>Años de Experiencia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AutoMax</h3>
+                    <p>Tu concesionario de confianza</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📞 +1 (555) 123-4567</p>
+                    <p>📧 info@automax.com</p>
+                    <p>📍 Av. Principal 123, Ciudad</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <p>Facebook | Instagram | Twitter</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AutoMax. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles del auto -->
+    <div id="car-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                <!-- Contenido del modal se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
